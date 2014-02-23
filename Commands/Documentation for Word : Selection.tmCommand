@@ -30,8 +30,6 @@ system command
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
-	<key>keyEquivalent</key>
-	<string>@d</string>
 	<key>name</key>
 	<string>Documentation for Word / Selection</string>
 	<key>outputCaret</key>
