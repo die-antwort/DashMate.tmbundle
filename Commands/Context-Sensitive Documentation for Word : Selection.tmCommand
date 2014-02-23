@@ -70,6 +70,7 @@ def language
     "sass"            =&gt; "css,sass",
     "scss"            =&gt; "css,sass",
     "shell"           =&gt; "bash,manpages",
+    "slim"            =&gt; "html,svg,bootstrap,foundation",
     "sql"             =&gt; "mysql,sqlite,psql",
   }
 
