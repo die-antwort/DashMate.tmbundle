@@ -50,6 +50,8 @@ def language
     "php"             =&gt; "php,wordpress,drupal,zend,laravel,yii,joomla,ee,codeigniter,cakephp,symfony,typo3,twig,smarty,html,mysql,sqlite,mongodb,psql,redis",
     "python"          =&gt; "python,django,twisted,sphinx,flask,cvp",
     "ruby"            =&gt; "ruby,rubygems,rails",
+    "sass"            =&gt; "css,sass",
+    "scss"            =&gt; "css,sass",
     "shell"           =&gt; "bash,manpages",
     "sql"             =&gt; "mysql,sqlite,psql",
   }
