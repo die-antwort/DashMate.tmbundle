@@ -36,7 +36,8 @@ end
 # "source.ruby attr.os-version.10.8.3 attr.untitled dyn.caret.end.document"
 def scope_lang
   scope = ENV['TM_SCOPE']
-  sources = scope.split(" ").select {|s| s.start_with? "source."}
+  sources = scope.split(" ").select {|s| s =~ /^(source|text)\./}
+  sources.sort! # Make sure 'source.*' precedes 'text.*', if both are present
   source = (sources.kind_of?(Array) &amp;&amp; sources.size &gt;= 1) ? sources[0] : ""
   source.split(".")[1]
 end
