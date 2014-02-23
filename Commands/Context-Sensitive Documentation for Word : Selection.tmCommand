@@ -22,6 +22,9 @@ def target_text
   when "sass", "scss", "css"
     # since dash (‘-’) is not a word character, extend current word to neighboring word and dash characters
     /[-\w]*#{Regexp.escape current_word}[-\w]*/.match(current_line)[0]
+  when "ruby"
+    # include trailing ! or ?, if present.
+    /#{Regexp.escape current_word}[!?]?/.match(current_line)[0]
   else
     current_word
   end
