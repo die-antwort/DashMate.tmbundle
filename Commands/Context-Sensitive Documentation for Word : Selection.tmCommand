@@ -14,12 +14,18 @@ require 'cgi'
 def target_text
   selection = ENV['TM_SELECTED_TEXT']
   current_word = ENV['TM_CURRENT_WORD']
-
-  if selection.nil? || selection.empty?
-    target = CGI.escape(current_word)
+  current_line = ENV['TM_CURRENT_LINE']
+  
+  return CGI.escape(selection) if selection &amp;&amp; selection != ""
+  
+  text = case scope_lang
+  when "sass", "scss", "css"
+    # since dash (‘-’) is not a word character, extend current word to neighboring word and dash characters
+    /[-\w]*#{Regexp.escape current_word}[-\w]*/.match(current_line)[0]
   else
-    target = CGI.escape(selection)
+    current_word
   end
+  target = CGI.escape(text)
 end
 
 # figure out the current language from the TM_SCOPE variable
