@@ -29,7 +29,7 @@ def target_text
     # include trailing ! or ?, if present.
     /#{Regexp.escape current_word}[!?]?/.match(current_line)[0]
   else
-    current_word
+    current_word || ""
   end
   target = CGI.escape(text)
 end
