@@ -18,14 +18,13 @@ def target_text
   
   return CGI.escape(selection) if selection &amp;&amp; selection != ""
   
-  text = case scope_lang
-  when "haml"
+  text = if language_scopes.include?("haml")
     # include leading : (HAML filter syntax), if present
     /:?#{Regexp.escape current_word}/.match(current_line)[0]
-  when "sass", "scss", "css"
+  elsif language_scopes.include?("sass") || language_scopes.include?("scss") || language_scopes.include?("css")
     # since dash (‘-’) is not a word character, extend current word to neighboring word and dash characters
     /[-\w]*#{Regexp.escape current_word}[-\w]*/.match(current_line)[0]
-  when "ruby"
+  elsif language_scopes.include?("ruby")
     # include trailing ! or ?, if present.
     /#{Regexp.escape current_word}[!?]?/.match(current_line)[0]
   else
@@ -34,17 +33,36 @@ def target_text
   target = CGI.escape(text)
 end
 
+def language_scopes
+  # create a list of exceptions where we do not want to
+  # pass the lang scope to the command line Dash command
+  lang_exceptions = []
+
+  # Identify "source" scopes; ones that represent languages
+  # Also include "text" scopes (e.g. "text.html")
+  source_scopes = ENV['TM_SCOPE'].split(" ").select {|s| s =~ /^(source|text)\./}
+
+  # Restructure to match key format in language_map
+  # Examples:
+  # []                                          =&gt; []
+  # ["source.language"]                         =&gt; ["language"]
+  # ["source.language.dialect"]                 =&gt; ["language.dialect", "language"]
+  # ["source.language", "source.otherlanguage"] =&gt; ["language", "other_language"]
+  #
+  scopes = (source_scopes || []).map do |source|
+    lang = source.split(".").slice(1..-1)
+    lang.map.with_index do |x, i|
+      (lang.slice(0, i) + [x]).join('.')
+    end.reverse
+  end.flatten
+
+  # Filter out anything in the lang_exceptions list
+  scopes.reject { |l| lang_exceptions.include?(l) }
+end
+
 # figure out the current language from the TM_SCOPE variable
 # take something like the following string and figure out that it's ruby
 # "source.ruby attr.os-version.10.8.3 attr.untitled dyn.caret.end.document"
-def scope_lang
-  scope = ENV['TM_SCOPE']
-  sources = scope.split(" ").select {|s| s =~ /^(source|text)\./}
-  sources.sort! # Make sure 'source.*' precedes 'text.*', if both are present
-  source = (sources.kind_of?(Array) &amp;&amp; sources.size &gt;= 1) ? sources[0] : ""
-  source.split(".")[1]
-end
-
 def language
   # convert TM source name to Dash docset keyword
   # http://kapeli.com/guide/guide#searchProfiles
@@ -76,16 +94,10 @@ def language
     "sql"             =&gt; "mysql,sqlite,psql",
   }
 
-  # create a list of exceptions where we do not want to
-  # pass the lang scope to the command line Dash command
-  lang_exceptions = []
+  # Lookup the docsets for each language
+  docsets = language_scopes.map { |l| language_map[l] || l }.join(',')
 
-  if (scope_lang.nil? || lang_exceptions.include?(scope_lang))
-    return ""
-  else
-    lang = language_map.has_key?(scope_lang) ? language_map[scope_lang] : scope_lang
-    return "#{lang}"
-  end
+  return "#{docsets}"
 end
 
 command = "open dash-plugin://keys=#{language}\\&amp;query=#{target_text}"
