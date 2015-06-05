@@ -69,6 +69,7 @@ def language
   language_map = {
     "c"               =&gt; "c,glib,gl2,gl3,gl4,manpages",
     "c++"             =&gt; "cpp,net,boost,qt,cvcpp,cocos2dx,c,manpages",
+    "c++.arduino"     =&gt; "arduino",
     "c#"              =&gt; "net,mono,unity3d",
     "coffee"          =&gt; "coffee,javascript,jquery,jqueryui,jquerym,backbone,marionette,meteor,sproutcore,moo,prototype,bootstrap,foundation,lodash,underscore,ember,sencha,extjs,knockout,zepto,yui,d3,svg,dojo,nodejs,express,mongoose,moment,require,awsjs,jasmine,sinon,grunt,chai,html,css,cordova,phonegap,unity3d",
     "css"             =&gt; "css,bootstrap,foundation,less,awesome,cordova,phonegap",
