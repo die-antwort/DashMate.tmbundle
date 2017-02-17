@@ -92,7 +92,7 @@ def language
     "sass"            =&gt; "css,sass,bootstrap,foundation,less,awesome,cordova,phonegap",
     "scss"            =&gt; "css,sass,bootstrap,foundation,less,awesome,cordova,phonegap",
     "shell"           =&gt; "bash,manpages",
-    "slim"            =&gt; "html,svg,css,bootstrap,foundation,awesome,statamic,javascript,jquery,jqueryui,jquerym,angularjs,backbone,marionette,meteor,moo,prototype,ember,lodash,underscore,sencha,extjs,knockout,zepto,cordova,phonegap,yui",
+    "slim"            =&gt; "html,svg,css,bootstrap,rails,foundation,awesome,statamic,javascript,jquery,jqueryui,jquerym,angularjs,backbone,marionette,meteor,moo,prototype,ember,lodash,underscore,sencha,extjs,knockout,zepto,cordova,phonegap,yui",
     "sql"             =&gt; "mysql,sqlite,psql",
   }
 
