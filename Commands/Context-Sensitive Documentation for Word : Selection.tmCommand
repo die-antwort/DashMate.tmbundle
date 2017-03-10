@@ -8,6 +8,7 @@
 	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby
 
 require 'cgi'
+require 'yaml'
 
 # target the current selection or the current
 # word if selection is empty
@@ -96,7 +97,19 @@ def language
     "slim"            =&gt; "html,svg,css,bootstrap,rails,foundation,awesome,statamic,javascript,jquery,jqueryui,jquerym,angularjs,backbone,marionette,meteor,moo,prototype,ember,lodash,underscore,sencha,extjs,knockout,zepto,cordova,phonegap,yui",
     "sql"             =&gt; "mysql,sqlite,psql",
   }
-
+  
+  # Project specific mappings can be defined in a `.dashmate.yml` file in the project root. For example, if you have Docsets for
+  # several Rails versions installed in Dashmate, a Rails 4 project could have `.dashmate.yml` containing:
+  #
+  #     ---
+  #       ruby.rails: rails4
+  #
+  # (Note that you would need to define `rails4` as search keyword for the “Ruby on Rails 4” docset in Dashmate first.)
+  if ENV['TM_PROJECT_DIRECTORY'] &amp;&amp; File.exist?("#{ENV['TM_PROJECT_DIRECTORY']}/.dashmate.yml")
+    project_scope_mappings = YAML.load_file("#{ENV['TM_PROJECT_DIRECTORY']}/.dashmate.yml")
+    language_map.merge!(project_scope_mappings)
+  end
+  
   # Lookup the docsets for each language
   docsets = language_scopes.map { |l| language_map[l] || l }.join(',')
 
