@@ -17,6 +17,7 @@ def target_text
   current_line = ENV['TM_CURRENT_LINE']
   
   return CGI.escape(selection) if selection &amp;&amp; selection != ""
+  return unless current_word
   
   text = if language_scopes.include?("haml")
     # include leading : (HAML filter syntax), if present
